@@ -26,7 +26,7 @@ export const createPerson = async (req, res) => {
             },
         });
 
-        return res.status(200).json({person: newPerson});
+        return res.status(200).json(newPerson);
     } catch (err) {
         if (err instanceof z.ZodError) {
            return  res.status(400).json({ error: err.errors });
@@ -35,4 +35,17 @@ export const createPerson = async (req, res) => {
         }
     }
 
+
+}
+
+export const getPersons = async (req,res) => { 
+
+    try {
+        const persons = await db.person.findMany();
+
+        return res.status(200).json(persons)
+    } catch (error) {
+        return res.status(500).json({message: error.message});
+    }
+    const persons = await db.person.findMany();
 }
