@@ -7,7 +7,6 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/', Allroutes)
-
 const PORT = 3000;
 
 
