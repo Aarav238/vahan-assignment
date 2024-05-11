@@ -1,5 +1,5 @@
 import express from 'express';
-import { createPerson, getPersons } from '../controllers/controllers.js';
+import { createPerson, getPersons, updatePerson } from '../controllers/controllers.js';
 
 
 const router = express.Router();
@@ -10,7 +10,8 @@ router.get('/', (req,res) => {
 })
 
 router.post('/person', createPerson);
-router.get('/getPersons',getPersons)
+router.get('/getPersons',getPersons);
+router.put('/person/:id',updatePerson)
 
 
 

@@ -2,17 +2,14 @@ import db from "../db/prisma.js";
 import {z} from 'zod';
 
 
-
+const personSchema = z.object({
+    name: z.string(),
+    email: z.string().email(),
+    mobileNumber: z.string().min(10),
+    dateOfBirth: z.string().transform((val) => new Date(val)),
+});
 
 export const createPerson = async (req, res) => {
-    const personSchema = z.object({
-        name: z.string(),
-        email: z.string().email(),
-        mobileNumber: z.string().min(10),
-        dateOfBirth: z.string().transform((val) => new Date(val)),
-    });
-
-
 
     const { name, email, mobileNumber, dateOfBirth } = personSchema.parse( req.body);
 
@@ -39,7 +36,6 @@ export const createPerson = async (req, res) => {
 }
 
 export const getPersons = async (req,res) => { 
-
     try {
         const persons = await db.person.findMany();
 
@@ -47,5 +43,35 @@ export const getPersons = async (req,res) => {
     } catch (error) {
         return res.status(500).json({message: error.message});
     }
-    const persons = await db.person.findMany();
 }
+
+
+export const updatePerson = async(req,res) => {
+    try {
+
+        const {id} = req.params;
+        const { name, email, mobileNumber, dateOfBirth } = personSchema.parse( req.body);
+
+        const updatedPerson = await db.person.update({
+            where: {
+                id: parseInt(id)
+            },
+            data: {
+                name,
+                email,
+                mobileNumber,
+                dateOfBirth: new Date(dateOfBirth),
+            }
+        });
+
+        return res.status(200).json(updatedPerson)
+        
+    } catch (error) {
+        if (err instanceof z.ZodError) {
+            return  res.status(400).json({ error: err.errors });
+         } else {
+             return res.status(500).json({ error: err.message });
+         }
+    }
+}
+
