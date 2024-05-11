@@ -75,3 +75,19 @@ export const updatePerson = async(req,res) => {
     }
 }
 
+
+export const deletePerson = async (req,res) => {
+    try {
+        const {id} = req.params;
+        const deletedPerson = await db.person.delete({
+            where: {
+                id: parseInt(id)
+            }
+        });
+
+        return res.status(200).json({message: "successfully deleted person" , person: deletedPerson} )
+        
+    } catch (error) {
+        return res.status(500).json({error: error.message})
+    }
+}
