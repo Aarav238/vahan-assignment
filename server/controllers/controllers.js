@@ -45,6 +45,20 @@ export const getPersons = async (req,res) => {
     }
 }
 
+export const getPerson = async(req,res) => {
+    const {id} = req.params;
+    try {
+        const person = await db.person.findFirst({
+            where: {
+                id: parseInt(id)
+            }
+        })
+
+        return res.status(200).json(person);
+    } catch (error) {
+        return res.status(500).json({message: error.message});
+    }
+}
 
 export const updatePerson = async(req,res) => {
     try {
