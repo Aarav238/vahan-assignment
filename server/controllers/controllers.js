@@ -80,7 +80,7 @@ export const updatePerson = async(req,res) => {
 
         const {id} = req.params;
         const { name, email, mobileNumber, dateOfBirth } = personSchema.parse( req.body);
-        
+
         const updatedPerson = await db.person.update({
             where: {
                 id: parseInt(id)
@@ -95,7 +95,7 @@ export const updatePerson = async(req,res) => {
 
         return res.status(200).json(updatedPerson)
         
-    } catch (error) {
+    } catch (err) {
         if (err instanceof z.ZodError) {
             return  res.status(400).json({ error: err.errors });
          } else {
