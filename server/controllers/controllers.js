@@ -80,17 +80,7 @@ export const updatePerson = async(req,res) => {
 
         const {id} = req.params;
         const { name, email, mobileNumber, dateOfBirth } = personSchema.parse( req.body);
-
-        const findPerson = await db.person.findFirst({
-            where: {
-                email: email
-            }
-        })
-
-        if(findPerson){
-          return res.status(208).json({message: "User Already Exists" , data: findPerson})
-            
-        }
+        
         const updatedPerson = await db.person.update({
             where: {
                 id: parseInt(id)

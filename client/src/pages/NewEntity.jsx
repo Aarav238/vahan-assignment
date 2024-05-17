@@ -43,7 +43,19 @@ useEffect(() => {
 
 
 
-console.log(entity);
+const formatDate = (dateString) => {
+
+  const date = new Date(dateString);
+
+  // Check if the date is valid
+  if (isNaN(date.getTime())) {
+    return dateString;
+  }
+
+  const formattedDate = date.toISOString().split('T')[0];
+
+  return formattedDate;
+}
 
 const handleSaveClick = async () => {
   try {
@@ -127,12 +139,12 @@ const handleSaveClick = async () => {
               {isEditing ? (
                 <input
                   type="date"
-                  value={dob}
+                  value={formatDate(dob)}
                   onChange={(e) => setDob(e.target.value)}
                   className="p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               ) : (
-                <p className="p-3 bg-gray-100 rounded-lg font-medium">{dob}</p>
+                <p className="p-3 bg-gray-100 rounded-lg font-medium">{formatDate(dob)}</p>
               )}
             </div>
           </div>
